@@ -48,9 +48,9 @@ export function Footer() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-fg-subtle transition-colors duration-200 hover:text-fg"
+                    className="group inline-flex items-center gap-2 text-sm text-fg-subtle transition-colors duration-200 hover:text-fg"
                   >
-                    <Icon size={16} />
+                    <Icon size={16} className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:-translate-y-0.5" />
                     {label}
                   </a>
                 </li>
@@ -58,9 +58,9 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${contact.email}`}
-                  className="inline-flex items-center gap-2 text-sm text-fg-subtle transition-colors duration-200 hover:text-fg"
+                  className="group inline-flex items-center gap-2 text-sm text-fg-subtle transition-colors duration-200 hover:text-fg"
                 >
-                  <Mail size={16} />
+                  <Mail size={16} className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:-translate-y-0.5" />
                   {contact.email}
                 </a>
               </li>

@@ -1,5 +1,6 @@
 import { skills } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
+import { SpotlightCard } from "@/components/spotlight-card";
 
 export function Skills() {
   return (
@@ -28,13 +29,13 @@ export function Skills() {
           {skills.map((group, i) => (
             <Reveal
               key={group.group}
-              delay={i * 60}
+              delay={i * 40}
               className={group.group === "Frontend" ? "sm:col-span-2 lg:col-span-1" : ""}
             >
-              <div className="card h-full p-6 transition-colors duration-[var(--duration-base)] hover:border-border-strong">
+              <SpotlightCard className="card group h-full p-6 transition-[border-color,transform] duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:-translate-y-1 hover:border-border-strong">
                 <div className="flex items-center justify-between gap-4">
                   <h3 className="mono-label text-fg-muted">{group.group}</h3>
-                  <span className="font-mono text-[0.65rem] text-fg-faint" aria-hidden>
+                  <span className="font-mono text-[0.65rem] text-fg-faint transition-colors duration-[var(--duration-base)] group-hover:text-accent" aria-hidden>
                     {String(group.items.length).padStart(2, "0")}
                   </span>
                 </div>
@@ -42,13 +43,13 @@ export function Skills() {
                   {group.items.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full border border-border bg-surface-sunken px-3 py-1.5 text-[0.8rem] font-medium text-fg-muted transition-colors duration-[var(--duration-base)] hover:border-accent hover:text-accent"
+                      className="rounded-full border border-border bg-surface-sunken px-3 py-1.5 text-[0.8rem] font-medium text-fg-muted transition-[border-color,color,transform] duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:-translate-y-0.5 hover:border-accent hover:text-accent"
                     >
                       {item}
                     </span>
                   ))}
                 </div>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

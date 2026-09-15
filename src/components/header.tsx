@@ -49,7 +49,7 @@ function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-fg-muted transition-colors duration-[var(--duration-base)] hover:border-border-strong hover:text-accent"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-fg-muted transition-colors duration-[var(--duration-base)] hover:border-border-strong hover:text-accent active:scale-95"
     >
       {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
     </button>
@@ -102,9 +102,9 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300 ${
+      className={`header-bar fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ${
         scrolled || open
-          ? "border-b border-border bg-background/80 backdrop-blur-md"
+          ? "border-b border-border bg-background/80 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35)] backdrop-blur-md"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -112,10 +112,10 @@ export function Header() {
         <a
           href="#home"
           onClick={closeMenu}
-          className="flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight"
+          className="group flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight"
           aria-label="Abdulrahman Mohammed — back to top"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-solid text-sm font-bold text-accent-contrast">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-solid text-sm font-bold text-accent-contrast transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-105">
             {profileMonogram}
           </span>
           <span className="hidden sm:inline">Abdulrahman<span className="text-accent">.</span></span>
@@ -127,7 +127,7 @@ export function Header() {
               key={item.href}
               href={item.href}
               aria-current={active === item.href ? "true" : undefined}
-              className={`rounded-md px-3 py-2 text-sm transition-colors duration-200 ${
+              className={`nav-link relative rounded-md px-3 py-2 text-sm transition-colors duration-200 hover:-translate-y-px ${
                 active === item.href
                   ? "text-accent"
                   : "text-fg-muted hover:text-fg"
@@ -140,6 +140,14 @@ export function Header() {
 
         <div className="flex items-center gap-2 md:hidden" />
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true }))}
+            aria-label="Open command palette"
+            className="hidden h-9 items-center gap-1.5 rounded-lg border border-border px-2.5 font-mono text-[0.65rem] text-fg-faint transition-colors duration-[var(--duration-base)] hover:border-border-strong hover:text-fg-muted md:inline-flex"
+          >
+            <span>⌘K</span>
+          </button>
           <ThemeToggle />
           <button
             type="button"
@@ -147,7 +155,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label="Toggle navigation menu"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-fg-muted transition-colors duration-[var(--duration-base)] hover:border-border-strong hover:text-accent md:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-fg-muted transition-colors duration-[var(--duration-base)] hover:border-border-strong hover:text-accent active:scale-95 md:hidden"
           >
             {open ? <Close size={18} /> : <Menu size={18} />}
           </button>

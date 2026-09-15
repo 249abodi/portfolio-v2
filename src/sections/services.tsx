@@ -1,5 +1,6 @@
 import { services } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
+import { SpotlightCard } from "@/components/spotlight-card";
 import {
   ArrowRight,
   Cloud,
@@ -46,8 +47,8 @@ export function Services() {
             const Icon = iconMap[service.icon] ?? Code;
             return (
               <Reveal key={service.title} delay={i * 60}>
-                <div className="card group flex h-full flex-col p-7 transition-[border-color,transform] duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:-translate-y-1 hover:border-border-strong">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface-sunken text-accent transition-colors duration-[var(--duration-base)] group-hover:border-accent">
+                <SpotlightCard className="card group flex h-full flex-col p-7 transition-[border-color,transform,box-shadow] duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:-translate-y-1 hover:border-border-strong hover:shadow-card-hover">
+                  <span className="icon-nudge flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface-sunken text-accent transition-colors duration-[var(--duration-base)] group-hover:-translate-y-1 group-hover:border-accent">
                     <Icon width={20} height={20} />
                   </span>
                   <h3 className="mt-6 font-display text-lg font-semibold tracking-tight text-fg">
@@ -58,12 +59,12 @@ export function Services() {
                   </p>
                   <a
                     href="#contact"
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
+                    className="group/link mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
                   >
                     Discuss a project
-                    <ArrowRight size={14} />
+                    <ArrowRight size={14} className="transition-transform duration-200 group-hover/link:translate-x-1" />
                   </a>
-                </div>
+                </SpotlightCard>
               </Reveal>
             );
           })}

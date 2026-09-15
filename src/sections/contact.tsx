@@ -1,6 +1,7 @@
 import { contact } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
 import { ContactForm } from "@/components/contact-form";
+import { SpotlightCard } from "@/components/spotlight-card";
 import { Facebook, Github, Instagram, Youtube } from "@/components/icons";
 
 const socials = [
@@ -15,19 +16,26 @@ export function Contact() {
     <section id="contact" className="section relative" aria-label="Contact">
       <div className="container-site">
         <Reveal variant="lg">
-          <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-surface px-6 py-16 shadow-card sm:px-12 md:py-20">
-            <div className="absolute -top-32 right-[-10%] h-72 w-72 rounded-full bg-accent-soft blur-3xl" aria-hidden />
+          <SpotlightCard className="relative overflow-hidden rounded-[1.75rem] border border-border bg-surface px-6 py-16 shadow-card sm:px-12 md:py-20">
+            <div className="motion-glow absolute -top-32 right-[-10%] h-72 w-72 rounded-full bg-accent-soft blur-3xl" aria-hidden />
             <div className="grid-backdrop" aria-hidden />
 
             <div className="relative mx-auto max-w-2xl text-center">
               <p className="section-kicker">Get In Touch</p>
-              <h2 className="section-title mt-4">Connect With Me</h2>
+              <h2 className="section-title mt-4">
+                Connect With Me
+                <span className="status-dot mt-1 inline-block h-2 w-2 rounded-full bg-accent align-middle" aria-hidden />
+              </h2>
               <p className="prose-lede mt-5 mx-auto">
                 Feel free to reach out for collaborations or just a friendly hello!
               </p>
             </div>
 
-            <div className="relative mx-auto mt-10 max-w-2xl">
+            <div className="relative mx-auto mt-10 max-w-2xl text-center">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
+                <span className="font-mono text-[0.7rem] text-fg-subtle">Available for freelance projects</span>
+              </div>
               <ContactForm />
             </div>
 
@@ -47,14 +55,14 @@ export function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-fg-subtle transition-colors duration-[var(--duration-base)] hover:border-accent hover:text-accent"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-fg-subtle transition-[border-color,color,transform] duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:-translate-y-1 hover:border-accent hover:text-accent active:scale-95"
                   >
                     <Icon size={18} />
                   </a>
                 ))}
               </div>
             </div>
-          </div>
+          </SpotlightCard>
         </Reveal>
       </div>
     </section>

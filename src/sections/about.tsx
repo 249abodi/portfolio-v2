@@ -1,5 +1,6 @@
 import { profile } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
+import { SpotlightCard } from "@/components/spotlight-card";
 import { MapPin } from "@/components/icons";
 
 const facts = [
@@ -51,8 +52,12 @@ export function About() {
 
             <Reveal delay={200}>
               <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-4">
-                {facts.map((fact) => (
-                  <div key={fact.label} className="bg-surface p-4">
+                {facts.map((fact, i) => (
+                  <div
+                    key={fact.label}
+                    className="stagger-cell group bg-surface p-4 transition-colors duration-[var(--duration-base)] hover:bg-surface-raised"
+                    style={{ "--cell-delay": `${i * 60}ms` } as React.CSSProperties}
+                  >
                     <dt className="mono-label text-[0.65rem] text-fg-subtle">{fact.label}</dt>
                     <dd className="mt-1.5 text-sm font-medium text-fg">{fact.value}</dd>
                   </div>
@@ -62,33 +67,32 @@ export function About() {
           </div>
 
           <Reveal variant="lg" delay={160}>
-            <div className="flex h-full flex-col justify-between gap-8 rounded-2xl border border-border bg-surface p-7 shadow-card">
+            <SpotlightCard className="group flex h-full flex-col justify-between gap-8 rounded-2xl border border-border bg-surface p-7 shadow-card">
               <div>
                 <div className="flex items-center justify-between">
                   <p className="mono-label text-fg-muted">What I play with</p>
-                  <span className="flex h-2 w-2 rounded-full bg-accent motion-pulse" aria-hidden />
+                  <span className="status-dot h-2 w-2 rounded-full bg-accent" aria-hidden />
                 </div>
                 <ul className="mt-5 space-y-3.5 text-sm text-fg-muted">
-                  <li className="flex gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
-                    Full-stack architecture across desktop, web & SaaS
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
-                    Product design — interfaces, flows, systems thinking
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
-                    Databases, auth & role-based access
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
-                    Turning vague ideas into shipped software
-                  </li>
+                  {[
+                    "Full-stack architecture across desktop, web & SaaS",
+                    "Product design — interfaces, flows, systems thinking",
+                    "Databases, auth & role-based access",
+                    "Turning vague ideas into shipped software",
+                  ].map((line, i) => (
+                    <li
+                      key={line}
+                      className="flex gap-3"
+                      style={{ transitionDelay: `${i * 40}ms` }}
+                    >
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent transition-transform duration-[var(--duration-base)] group-hover:scale-125" aria-hidden />
+                      {line}
+                    </li>
+                  ))}
                 </ul>
               </div>
 
-              <div className="flex items-center gap-3 rounded-xl border border-border bg-surface-sunken p-4">
+              <div className="flex items-center gap-3 rounded-xl border border-border bg-surface-sunken p-4 transition-colors duration-[var(--duration-base)] group-hover:border-border-strong">
                 <MapPin size={18} className="shrink-0 text-accent" />
                 <p className="text-sm text-fg-subtle">
                   Open to work on freelance & student projects —{" "}
@@ -97,7 +101,7 @@ export function About() {
                   </a>
                 </p>
               </div>
-            </div>
+            </SpotlightCard>
           </Reveal>
         </div>
       </div>

@@ -4,6 +4,9 @@ import "./globals.css";
 import ThemeScript from "@/components/theme-script";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { CursorGlow } from "@/components/cursor-glow";
+import { CommandPalette } from "@/components/command-palette";
 import { contact, profile } from "@/lib/site";
 import { absoluteUrl } from "@/lib/site-url";
 
@@ -109,6 +112,9 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col">
+        <ScrollProgress />
+        <CursorGlow />
+        <CommandPalette />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-accent-solid focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:text-accent-contrast"

@@ -53,6 +53,7 @@ export const projects = [
     tagline: company.tagline,
     href: company.href,
     repo: company.repo,
+    caseStudy: "/projects/qaveno/",
     stack: company.stack,
     description: company.description,
     features: company.features,
@@ -62,6 +63,7 @@ export const projects = [
     tagline: zelvoa.tagline,
     href: zelvoa.href,
     repo: zelvoa.repo,
+    caseStudy: "/projects/zelvoa/",
     stack: zelvoa.stack,
     description: zelvoa.description,
     features: zelvoa.features,
@@ -71,6 +73,7 @@ export const projects = [
     tagline: "This site — designed and built from scratch",
     href: null,
     repo: null,
+    caseStudy: null,
     stack: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
     description:
       "A dark-first, minimal developer portfolio. Static export, zero runtime dependencies, accessible and responsive down to 320px.",

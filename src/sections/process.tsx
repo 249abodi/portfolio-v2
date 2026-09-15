@@ -16,18 +16,20 @@ export function Process() {
 
         <ol className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
           {process.map((step, i) => (
-            <Reveal key={step.step} delay={i * 60} as="li">
+            <Reveal key={step.step} delay={i * 100} as="li">
               <div className="relative h-full pt-2">
-                <span className="font-display text-4xl font-semibold tracking-tight text-accent/30" aria-hidden>
+                <span className="process-step font-display text-4xl font-semibold tracking-tight text-accent/40" aria-hidden>
                   {step.step}
                 </span>
-                <span className="mt-2 block h-px w-10 bg-accent" aria-hidden />
+                <span className="mt-2 block h-px w-10 bg-accent" aria-hidden>
+                  <span className="process-line block h-full w-full bg-accent" />
+                </span>
                 <h3 className="mt-4 font-display text-base font-semibold tracking-tight text-fg">
                   {step.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-fg-subtle">{step.description}</p>
                 {i < process.length - 1 ? (
-                  <span className="absolute -right-3 top-6 hidden text-fg-faint lg:block" aria-hidden>
+                  <span className="absolute -right-3 top-6 hidden text-fg-faint transition-transform duration-300 group-hover:translate-x-0.5 lg:block" aria-hidden>
                     →
                   </span>
                 ) : null}

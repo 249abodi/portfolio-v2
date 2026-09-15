@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, Close } from "@/components/icons";
+import { Magnetic } from "@/components/magnetic";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -94,7 +95,7 @@ export function ContactForm() {
         <button
           type="button"
           onClick={reset}
-          className="mt-6 text-sm font-medium text-accent underline-offset-4 hover:underline"
+          className="mt-6 text-sm font-medium text-accent underline-offset-4 transition-colors duration-200 hover:underline"
         >
           Send another message
         </button>
@@ -126,7 +127,7 @@ export function ContactForm() {
   }
 
   const inputBase =
-    "w-full rounded-xl border border-border bg-surface-sunken px-4 py-3 text-sm text-fg placeholder:text-fg-faint transition-colors duration-[var(--duration-base)] focus:border-accent";
+    "w-full rounded-xl border border-border bg-surface-sunken px-4 py-3 text-sm text-fg placeholder:text-fg-faint transition-[border-color,box-shadow] duration-[var(--duration-base)] ease-[var(--ease-out-quart)] focus:border-accent focus:shadow-[0_0_0_3px_var(--color-accent-soft)]";
 
   return (
     <form
@@ -226,29 +227,31 @@ export function ContactForm() {
           ) : null}
         </div>
 
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className="group inline-flex h-13 w-full items-center justify-center gap-2.5 rounded-full bg-accent-solid px-7 text-sm font-semibold text-accent-contrast shadow-glow transition-all duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 sm:w-auto sm:px-8"
-        >
-          {status === "loading" ? (
-            <>
-              <span
-                className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent"
-                aria-hidden
-              />
-              Sending…
-            </>
-          ) : (
-            <>
-              Send Message
-              <ArrowRight
-                size={16}
-                className="transition-transform duration-200 group-hover:translate-x-0.5"
-              />
-            </>
-          )}
-        </button>
+        <Magnetic className="block w-full sm:inline-block">
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className="group inline-flex h-13 w-full items-center justify-center gap-2.5 rounded-full bg-accent-solid px-7 text-sm font-semibold text-accent-contrast shadow-glow transition-[transform,opacity] duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 sm:w-auto sm:px-8"
+          >
+            {status === "loading" ? (
+              <>
+                <span
+                  className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent"
+                  aria-hidden
+                />
+                Sending…
+              </>
+            ) : (
+              <>
+                Send Message
+                <ArrowRight
+                  size={16}
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                />
+              </>
+            )}
+          </button>
+        </Magnetic>
       </div>
     </form>
   );
