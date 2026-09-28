@@ -1,6 +1,7 @@
 import { visitorKey } from "@/lib/ai/client-identity";
 import { checkDemoLimit } from "@/lib/ai/demo-limit";
 import { redact, reportEnvPresence, trace, warn } from "@/lib/ai/diagnostics";
+import { clearUpstreamCooldown, isUpstreamInCooldown, noteUpstreamDown, upstreamCooldownRetryAfter } from "@/lib/ai/upstream-cooldown";
 import { buildSystemPrompt } from "@/lib/ai/prompt";
 import { checkRateLimit } from "@/lib/ai/rate-limit";
 import { MAX_MESSAGES, MAX_MESSAGE_CHARS } from "@/lib/ai/types";
@@ -29,6 +30,14 @@ const MAX_ATTEMPTS = 3;
  */
 const RETRYABLE_STATUS = new Set([408, 500, 502, 503, 504]);
 const RETRY_BASE_DELAY_MS = 700;
+
+/**
+ * Shown when the upstream cannot serve, including when the Gemini free tier's
+ * daily allowance is spent. Deliberately says nothing about quota, billing,
+ * models, or configuration. The browser renders its own generic copy, so this
+ * string is what an API client sees.
+ */
+const UPSTREAM_UNAVAILABLE_MESSAGE = "AI demo is temporarily unavailable. Please try again later or contact me directly.";
 
 type StreamStats = { deltas: number; parseFailures: number; sawDone: boolean };
 
@@ -187,12 +196,12 @@ function classifyStatus(status: number): { code: string; message: string; status
     };
   }
   if (status === 429) {
-    return { code: "upstream_rate", message: "The assistant is busy. Please try again shortly.", status: 503 };
+    return { code: "upstream_rate", message: UPSTREAM_UNAVAILABLE_MESSAGE, status: 503 };
   }
   if (status >= 500) {
-    return { code: "upstream_unavailable", message: "The assistant is temporarily unavailable.", status: 503 };
+    return { code: "upstream_unavailable", message: UPSTREAM_UNAVAILABLE_MESSAGE, status: 503 };
   }
-  return { code: "upstream_error", message: "The assistant is temporarily unavailable.", status: 502 };
+  return { code: "upstream_error", message: UPSTREAM_UNAVAILABLE_MESSAGE, status: 502 };
 }
 
 /** Pulls a short, redacted explanation out of an upstream error body. */
@@ -286,6 +295,15 @@ export async function POST(request: Request) {
 
   const locale: Locale = isLocale(body?.locale) ? body.locale : "en";
 
+  // Placed after validation on purpose: a malformed request still gets its 400
+  // instead of being masked by the breaker. When the upstream is already refusing
+  // traffic, fail fast rather than pay for another doomed round-trip.
+  if (isUpstreamInCooldown()) {
+    const retryAfter = upstreamCooldownRetryAfter();
+    warn("upstream.cooldown", { retryAfter });
+    return error(503, "upstream_unavailable", UPSTREAM_UNAVAILABLE_MESSAGE, retryAfter);
+  }
+
   const payload = JSON.stringify({
     model,
     stream: true,
@@ -337,7 +355,11 @@ export async function POST(request: Request) {
       continue;
     }
 
-    if (upstream.ok) break;
+    if (upstream.ok) {
+      // Proof the upstream is serving again, so drop any breaker immediately.
+      clearUpstreamCooldown();
+      break;
+    }
 
     const detail = await upstreamMessage(upstream);
     warn("upstream.http_error", {
@@ -347,6 +369,11 @@ export async function POST(request: Request) {
       model,
       detail: String(detail).slice(0, 300),
     });
+
+    // 429 on the free tier means the daily allowance is spent, and it does not
+    // come back within this request. Open the breaker so the next visitor is not
+    // made to wait for the same refusal.
+    if (upstream.status === 429) noteUpstreamDown();
 
     if (!RETRYABLE_STATUS.has(upstream.status)) break;
   }

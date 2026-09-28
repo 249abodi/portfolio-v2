@@ -14,6 +14,12 @@ const { createFixedWindowLimiter, DEMO_HOURLY_LIMIT, DEMO_HOURLY_WINDOW_MS } = a
 );
 const { visitorKey, extractClientIp } = await import("../src/lib/ai/client-identity.ts");
 const { checkRateLimit } = await import("../src/lib/ai/rate-limit.ts");
+const {
+  isUpstreamInCooldown,
+  upstreamCooldownRetryAfter,
+  noteUpstreamDown,
+  clearUpstreamCooldown,
+} = await import("../src/lib/ai/upstream-cooldown.ts");
 
 /** The allowance this project ships with. Pinned so a wrong limit fails loudly. */
 const EXPECTED_HOURLY_LIMIT = 10;
@@ -191,4 +197,44 @@ test("the hourly cap still binds before the minute cap", () => {
   // visitor actually sees. Asserted so the two numbers stay honest about it.
   assert.equal(DEMO_HOURLY_LIMIT, 10);
   assert.ok(DEMO_HOURLY_LIMIT < 12, "hourly allowance should bind before the minute allowance");
+});
+
+test("the upstream breaker starts closed", () => {
+  clearUpstreamCooldown();
+  assert.equal(isUpstreamInCooldown(), false, "a fresh process must try the upstream");
+  assert.equal(upstreamCooldownRetryAfter(), 0);
+});
+
+test("a quota refusal opens the breaker and it reports a retry delay", () => {
+  clearUpstreamCooldown();
+  const at = 5_000_000;
+  noteUpstreamDown(at);
+
+  assert.equal(isUpstreamInCooldown(at), true, "breaker must be open right after a 429");
+  const retryAfter = upstreamCooldownRetryAfter(at);
+  assert.ok(retryAfter > 0 && retryAfter <= 600, `unexpected retryAfter ${retryAfter}`);
+});
+
+test("the breaker closes again once its window passes", () => {
+  clearUpstreamCooldown();
+  const at = 5_000_000;
+  noteUpstreamDown(at);
+
+  assert.equal(isUpstreamInCooldown(at + 9 * 60_000), true, "must still be open inside the window");
+  assert.equal(isUpstreamInCooldown(at + 11 * 60_000), false, "must reopen after the window");
+});
+
+test("a successful upstream call clears the breaker immediately", () => {
+  const at = 5_000_000;
+  noteUpstreamDown(at);
+  assert.equal(isUpstreamInCooldown(at), true);
+
+  clearUpstreamCooldown();
+  assert.equal(isUpstreamInCooldown(at), false, "recovery must not wait out the window");
+});
+
+test("the breaker never reports a negative retry delay", () => {
+  clearUpstreamCooldown();
+  assert.equal(upstreamCooldownRetryAfter(), 0);
+  assert.ok(upstreamCooldownRetryAfter() >= 0);
 });
