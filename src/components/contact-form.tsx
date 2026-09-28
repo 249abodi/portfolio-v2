@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import type { Messages } from "@/lib/messages/types";
 import { ArrowRight, Check, Close } from "@/components/icons";
 import { Magnetic } from "@/components/magnetic";
 
@@ -14,7 +15,7 @@ type FieldErrors = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function ContactForm() {
+export function ContactForm({ t }: { t: Messages["contact"]["form"] }) {
   const [status, setStatus] = useState<Status>("idle");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,13 +24,13 @@ export function ContactForm() {
 
   function validate(): boolean {
     const next: FieldErrors = {};
-    if (!name.trim()) next.name = "Name is required.";
+    if (!name.trim()) next.name = t.nameRequired;
     if (!email.trim()) {
-      next.email = "Email is required.";
+      next.email = t.emailRequired;
     } else if (!EMAIL_RE.test(email)) {
-      next.email = "Please enter a valid email address.";
+      next.email = t.emailInvalid;
     }
-    if (!message.trim()) next.message = "Message is required.";
+    if (!message.trim()) next.message = t.messageRequired;
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -87,17 +88,15 @@ export function ContactForm() {
           <Check size={24} className="text-accent" />
         </div>
         <h3 className="mt-5 font-display text-xl font-semibold tracking-tight text-fg">
-          Message sent successfully!
+          {t.successTitle}
         </h3>
-        <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-          Thanks for reaching out. I&apos;ll get back to you as soon as possible.
-        </p>
+        <p className="mt-2 text-sm leading-relaxed text-fg-muted">{t.successBody}</p>
         <button
           type="button"
           onClick={reset}
           className="mt-6 text-sm font-medium text-accent underline-offset-4 transition-colors duration-200 hover:underline"
         >
-          Send another message
+          {t.sendAnother}
         </button>
       </div>
     );
@@ -110,17 +109,15 @@ export function ContactForm() {
           <Close size={24} className="text-fg-muted" />
         </div>
         <h3 className="mt-5 font-display text-xl font-semibold tracking-tight text-fg">
-          Something went wrong.
+          {t.errorTitle}
         </h3>
-        <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-          Please try again in a moment.
-        </p>
+        <p className="mt-2 text-sm leading-relaxed text-fg-muted">{t.errorBody}</p>
         <button
           type="button"
           onClick={reset}
           className="mt-6 text-sm font-medium text-accent underline-offset-4 hover:underline"
         >
-          Try again
+          {t.tryAgain}
         </button>
       </div>
     );
@@ -143,21 +140,20 @@ export function ContactForm() {
 
       <p className="sr-only">
         <label>
-          Don&apos;t fill this out if you&apos;re human:{" "}
-          <input name="bot-field" tabIndex={-1} autoComplete="off" />
+          {t.honeypot} <input name="bot-field" tabIndex={-1} autoComplete="off" />
         </label>
       </p>
 
       <div className="space-y-5">
         <div>
           <label htmlFor="contact-name" className="mono-label mb-2 block text-fg-muted">
-            Name
+            {t.nameLabel}
           </label>
           <input
             id="contact-name"
             name="name"
             type="text"
-            placeholder="Your name"
+            placeholder={t.namePlaceholder}
             required
             value={name}
             onChange={(e) => {
@@ -177,13 +173,13 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="contact-email" className="mono-label mb-2 block text-fg-muted">
-            Email
+            {t.emailLabel}
           </label>
           <input
             id="contact-email"
             name="email"
             type="email"
-            placeholder="you@example.com"
+            placeholder={t.emailPlaceholder}
             required
             value={email}
             onChange={(e) => {
@@ -203,12 +199,12 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="contact-message" className="mono-label mb-2 block text-fg-muted">
-            Message
+            {t.messageLabel}
           </label>
           <textarea
             id="contact-message"
             name="message"
-            placeholder="Tell me a little about your project or idea..."
+            placeholder={t.messagePlaceholder}
             required
             rows={5}
             value={message}
@@ -239,14 +235,14 @@ export function ContactForm() {
                   className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent"
                   aria-hidden
                 />
-                Sending…
+                {t.sending}
               </>
             ) : (
               <>
-                Send Message
+                {t.send}
                 <ArrowRight
                   size={16}
-                  className="transition-transform duration-200 group-hover:translate-x-1"
+                  className="transition-transform duration-200 group-hover:translate-x-1 rtl:rotate-180"
                 />
               </>
             )}

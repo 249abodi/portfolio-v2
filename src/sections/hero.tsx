@@ -1,7 +1,9 @@
 import Image from "next/image";
-import { contact, profile } from "@/lib/site";
+import { contact } from "@/lib/site";
+import type { Messages } from "@/lib/messages/types";
 import { ArrowRight, Facebook, Github, Instagram, Youtube } from "@/components/icons";
 import { Magnetic } from "@/components/magnetic";
+import { Hero3D } from "@/components/hero-3d";
 
 const socials = [
   { label: "GitHub", href: contact.github, icon: Github },
@@ -10,7 +12,7 @@ const socials = [
   { label: "Facebook", href: contact.facebook, icon: Facebook },
 ];
 
-export function Hero() {
+export function Hero({ t, name }: { t: Messages["hero"]; name: string }) {
   return (
     <section id="home" className="relative overflow-hidden" aria-label="Introduction">
       <div
@@ -26,28 +28,28 @@ export function Hero() {
         <div>
           <p className="hero-item section-kicker flex items-center gap-2.5" style={{ "--hero-delay": "0ms" } as React.CSSProperties}>
             <span className="status-dot h-2 w-2 rounded-full bg-accent" aria-hidden />
-            Software Engineering Student · UTM
+            {t.kicker}
           </p>
 
           <h1
             className="hero-item heading-display mt-6 text-[clamp(2.7rem,7vw,4.9rem)]"
             style={{ "--hero-delay": "120ms" } as React.CSSProperties}
           >
-            {profile.name}
+            {name}
           </h1>
 
           <p
             className="hero-item mono-label mt-5 text-fg-muted"
             style={{ "--hero-delay": "200ms" } as React.CSSProperties}
           >
-            {profile.roles.join("   ·   ")}
+            {t.roles.join("   ·   ")}
           </p>
 
           <p
             className="hero-item prose-lede mt-6"
             style={{ "--hero-delay": "280ms" } as React.CSSProperties}
           >
-            {profile.tagline}
+            {t.tagline}
           </p>
 
           <div
@@ -55,7 +57,7 @@ export function Hero() {
             style={{ "--hero-delay": "340ms" } as React.CSSProperties}
           >
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
-            <span className="font-mono text-[0.7rem] text-fg-subtle">Available for freelance projects</span>
+            <span className="font-mono text-[0.7rem] text-fg-subtle">{t.available}</span>
           </div>
 
           <div className="hero-item mt-9 flex flex-wrap items-center gap-3.5" style={{ "--hero-delay": "420ms" } as React.CSSProperties}>
@@ -64,8 +66,8 @@ export function Hero() {
                 href="#projects"
                 className="group inline-flex h-12 items-center gap-2.5 rounded-full bg-accent-solid px-6 text-sm font-semibold text-accent-contrast shadow-glow transition-all duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:scale-[1.02] active:scale-[0.98]"
               >
-                View Projects
-                <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+                {t.viewProjects}
+                <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1 rtl:rotate-180" />
               </a>
             </Magnetic>
             <Magnetic strength={0.28}>
@@ -74,7 +76,7 @@ export function Hero() {
                 className="inline-flex h-12 items-center gap-2.5 rounded-full border border-border-strong px-6 text-sm font-medium text-fg transition-[border-color,background-color,transform] duration-[var(--duration-base)] ease-[var(--ease-out-quart)] hover:border-accent hover:text-accent active:scale-[0.98]"
               >
                 <span className="status-dot h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-                Get in touch
+                {t.getInTouch}
               </a>
             </Magnetic>
           </div>
@@ -102,19 +104,23 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hero-portrait mx-auto w-full max-w-sm lg:max-w-none">
-          <div className="relative mx-auto aspect-[3/4] w-full max-w-[340px] lg:max-w-[400px]">
+        <div className="hero-portrait mx-auto w-full lg:max-w-none">
+          <div className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[420px]">
             <div className="absolute -inset-3 rounded-[2rem] bg-accent-soft blur-2xl" aria-hidden />
-            <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] border border-border shadow-card-hover">
+
+            <div className="absolute right-[-8%] top-1/2 h-[58%] w-[58%] -translate-y-1/2">
+              <Hero3D />
+            </div>
+
+            <div className="absolute left-0 top-1/2 h-[75%] w-[70%] -translate-y-1/2 overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-card-hover">
               <Image
                 src="/profile.jpg"
-                alt={`Portrait of ${profile.name}`}
+                alt={name}
                 fill
-                sizes="(min-width: 1024px) 400px, 340px"
                 priority
+                sizes="(min-width: 1024px) 294px, (min-width: 640px) 238px, 196px"
                 className="object-cover"
               />
-              <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-t from-sunken/40 via-transparent to-transparent" aria-hidden />
             </div>
 
             <span className="absolute -left-4 top-8 hidden rounded-lg border border-border bg-surface px-3 py-2 font-mono text-[0.65rem] uppercase tracking-wider text-fg-muted shadow-pop motion-float sm:block">
@@ -135,9 +141,9 @@ export function Hero() {
         <a
           href="#about"
           className="flex -translate-x-1/2 flex-col items-center gap-2 text-fg-subtle transition-colors duration-200 hover:text-accent"
-          aria-label="Scroll to About"
+          aria-label={t.scrollToAbout}
         >
-          <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">scroll</span>
+          <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">{t.scroll}</span>
           <svg
             width="14"
             height="18"

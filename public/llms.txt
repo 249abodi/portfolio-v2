@@ -1,0 +1,22 @@
+# Abdulrahman Mohammed
+
+> Software engineering student and full-stack developer. I design and build full-stack products — from POS systems to multi-tenant SaaS platforms.
+
+Abdulrahman Mohammed is a software engineering student at Universiti Teknologi Malaysia and a full-stack web developer who designs and builds complete products — interfaces, APIs, databases, and everything in between.
+
+The portfolio is available in two languages:
+- English: https://249abodii.vercel.app/
+- Arabic (RTL): https://249abodii.vercel.app/ar/
+
+## Products
+
+- [QAVENO](https://qaveno.vercel.app/): A business management and point-of-sale system that runs as a desktop app and a SaaS platform — handling sales, inventory, purchasing, branches, and user roles across the full business workflow.
+- [ZELVOA](https://zelvoa.vercel.app/): A multi-tenant SaaS platform for social media management — scheduling content, running campaigns, and tracking analytics with role-based access for teams and organizations.
+- [portfolio-v2 — this site](https://249abodii.vercel.app/): A dark-first, minimal developer portfolio built with Next.js, React, TypeScript, and Tailwind CSS — static export with zero runtime dependencies and full English & Arabic support.
+
+## Contact
+
+- Email: bm605079@gmail.com
+- GitHub: https://github.com/249abodi
+- YouTube: https://www.youtube.com/@3kbbb
+- Instagram: https://www.instagram.com/249_abodii

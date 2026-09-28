@@ -600,3 +600,30 @@ body {
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
+
+/* ============================================================
+   RTL (Arabic)
+   ============================================================ */
+
+[dir="rtl"] {
+  --font-sans: var(--font-noto-sans-arabic), var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-noto-kufi-arabic), var(--font-space-grotesk), var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* Arabic script has no letter-spacing; neutralize tracking utilities */
+[dir="rtl"] :where(h1, h2, h3, h4, h5, h6, p, span, a, li, button, input, textarea, label, summary) {
+  letter-spacing: 0;
+}
+
+[dir="rtl"] .nav-link::after {
+  transform-origin: right;
+}
+
+[dir="rtl"] .process-line {
+  transform-origin: right center;
+}
+
+[dir="rtl"] .scroll-progress {
+  transform-origin: left 50%;
+}

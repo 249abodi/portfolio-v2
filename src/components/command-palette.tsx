@@ -1,34 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Messages, PaletteCommand } from "@/lib/messages/types";
 import { Close } from "@/components/icons";
 
-type CommandItem = {
-  id: string;
-  label: string;
-  description: string;
-  href: string;
-  category: "section" | "project" | "link";
-};
-
-const commands: CommandItem[] = [
-  { id: "home", label: "Home", description: "Go to hero section", href: "#home", category: "section" },
-  { id: "about", label: "About", description: "Learn about me", href: "#about", category: "section" },
-  { id: "skills", label: "Skills", description: "View technical skills", href: "#skills", category: "section" },
-  { id: "projects", label: "Projects", description: "See selected work", href: "#projects", category: "section" },
-  { id: "stats", label: "Engineering Stats", description: "Technical highlights", href: "#stats", category: "section" },
-  { id: "github", label: "GitHub", description: "Open source projects", href: "#github", category: "section" },
-  { id: "cv", label: "CV", description: "Education & expertise", href: "#cv", category: "section" },
-  { id: "services", label: "Services", description: "What I can build for you", href: "#services", category: "section" },
-  { id: "contact", label: "Contact", description: "Get in touch", href: "#contact", category: "section" },
-  { id: "qaveno", label: "QAVENO Case Study", description: "POS & inventory platform", href: "/projects/qaveno/", category: "project" },
-  { id: "zelvoa", label: "ZELVOA Case Study", description: "Social media management SaaS", href: "/projects/zelvoa/", category: "project" },
-  { id: "github-profile", label: "GitHub Profile", description: "github.com/249abodi", href: "https://github.com/249abodi", category: "link" },
-  { id: "qaveno-live", label: "QAVENO Live", description: "qaveno.vercel.app", href: "https://qaveno.vercel.app/", category: "link" },
-  { id: "zelvoa-live", label: "ZELVOA Live", description: "zelvoa.vercel.app", href: "https://zelvoa.vercel.app/", category: "link" },
-];
-
-export function CommandPalette() {
+export function CommandPalette({
+  commands,
+  t,
+}: {
+  commands: PaletteCommand[];
+  t: Messages["palette"];
+}) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -44,7 +26,7 @@ export function CommandPalette() {
         cmd.description.toLowerCase().includes(q) ||
         cmd.category.toLowerCase().includes(q)
     );
-  }, [query]);
+  }, [query, commands]);
 
   const handleQueryChange = useCallback((value: string) => {
     setQuery(value);
@@ -52,7 +34,7 @@ export function CommandPalette() {
   }, []);
 
   const runCommand = useCallback(
-    (cmd: CommandItem) => {
+    (cmd: PaletteCommand) => {
       setOpen(false);
       setQuery("");
       if (cmd.href.startsWith("#")) {
@@ -124,7 +106,7 @@ export function CommandPalette() {
       className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]"
       role="dialog"
       aria-modal="true"
-      aria-label="Command palette"
+      aria-label={t.aria}
     >
       <div
         className="fixed inset-0 bg-background/60 backdrop-blur-sm"
@@ -140,7 +122,7 @@ export function CommandPalette() {
             type="text"
             value={query}
             onChange={(e) => handleQueryChange(e.target.value)}
-            placeholder="Search sections, projects, links…"
+            placeholder={t.placeholder}
             className="flex-1 bg-transparent py-4 text-sm text-fg outline-none placeholder:text-fg-faint"
             role="combobox"
             aria-expanded
@@ -151,7 +133,7 @@ export function CommandPalette() {
             type="button"
             onClick={() => { setOpen(false); setQuery(""); }}
             className="inline-flex h-7 w-7 items-center justify-center rounded-md text-fg-subtle transition-colors duration-200 hover:text-fg"
-            aria-label="Close command palette"
+            aria-label={t.closeAria}
           >
             <Close size={16} />
           </button>
@@ -164,7 +146,7 @@ export function CommandPalette() {
           className="max-h-72 overflow-y-auto p-2"
         >
           {filtered.length === 0 ? (
-            <p className="py-6 text-center text-sm text-fg-subtle">No results found.</p>
+            <p className="py-6 text-center text-sm text-fg-subtle">{t.noResults}</p>
           ) : (
             filtered.map((cmd, i) => (
               <button
@@ -175,7 +157,7 @@ export function CommandPalette() {
                 aria-selected={i === activeIndex}
                 onClick={() => runCommand(cmd)}
                 onMouseEnter={() => setActiveIndex(i)}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 ${
+                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 rtl:text-right ${
                   i === activeIndex ? "bg-accent-soft text-accent" : "text-fg-muted hover:bg-surface-raised"
                 }`}
               >
@@ -187,7 +169,7 @@ export function CommandPalette() {
                   <p className="truncate text-xs text-fg-subtle">{cmd.description}</p>
                 </div>
                 <span className="shrink-0 rounded-full border border-border bg-surface-sunken px-2 py-0.5 font-mono text-[0.55rem] text-fg-faint">
-                  {cmd.category}
+                  {t.categories[cmd.category]}
                 </span>
               </button>
             ))
@@ -195,9 +177,9 @@ export function CommandPalette() {
         </div>
 
         <div className="flex items-center gap-4 border-t border-border px-4 py-2.5 font-mono text-[0.6rem] text-fg-faint">
-          <span>↑↓ navigate</span>
-          <span>↵ select</span>
-          <span>esc close</span>
+          {t.hints.map((hint) => (
+            <span key={hint}>{hint}</span>
+          ))}
         </div>
       </div>
     </div>

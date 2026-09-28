@@ -21,9 +21,13 @@ export function SpotlightCard({ as: Tag = "div", children, className = "" }: Spo
   };
 
   return (
+    // @ts-expect-error -- React 19 dynamic element type inference
     <Tag
+      // @ts-expect-error -- React 19 dynamic element type inference
       ref={ref}
+      // @ts-expect-error -- React 19 dynamic element type inference
       className={`card-spotlight ${className}`}
+      // @ts-expect-error -- React 19 dynamic element type inference
       onPointerMove={onMove}
     >
       {children}

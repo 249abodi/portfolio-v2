@@ -1,21 +1,21 @@
-import { process } from "@/lib/site";
+import type { Messages } from "@/lib/messages/types";
 import { Reveal } from "@/components/reveal";
 
-export function Process() {
+export function Process({ t }: { t: Messages["process"] }) {
   return (
     <section className="section relative" aria-label="Process">
       <div className="container-narrow">
         <div className="text-center">
           <Reveal>
-            <p className="section-kicker">Process</p>
+            <p className="section-kicker">{t.kicker}</p>
           </Reveal>
           <Reveal delay={60}>
-            <h2 className="section-title mt-4">A clear path from idea to shipped.</h2>
+            <h2 className="section-title mt-4">{t.title}</h2>
           </Reveal>
         </div>
 
         <ol className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
-          {process.map((step, i) => (
+          {t.steps.map((step, i) => (
             <Reveal key={step.step} delay={i * 100} as="li">
               <div className="relative h-full pt-2">
                 <span className="process-step font-display text-4xl font-semibold tracking-tight text-accent/40" aria-hidden>
@@ -28,8 +28,11 @@ export function Process() {
                   {step.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-fg-subtle">{step.description}</p>
-                {i < process.length - 1 ? (
-                  <span className="absolute -right-3 top-6 hidden text-fg-faint transition-transform duration-300 group-hover:translate-x-0.5 lg:block" aria-hidden>
+                {i < t.steps.length - 1 ? (
+                  <span
+                    className="absolute -end-3 top-6 hidden text-fg-faint transition-transform duration-300 group-hover:translate-x-0.5 rtl:scale-x-[-1] lg:block"
+                    aria-hidden
+                  >
                     →
                   </span>
                 ) : null}

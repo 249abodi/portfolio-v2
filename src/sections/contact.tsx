@@ -1,4 +1,5 @@
 import { contact } from "@/lib/site";
+import type { Messages } from "@/lib/messages/types";
 import { Reveal } from "@/components/reveal";
 import { ContactForm } from "@/components/contact-form";
 import { SpotlightCard } from "@/components/spotlight-card";
@@ -11,7 +12,7 @@ const socials = [
   { label: "Facebook", href: contact.facebook, icon: Facebook },
 ];
 
-export function Contact() {
+export function Contact({ t }: { t: Messages["contact"] }) {
   return (
     <section id="contact" className="section relative" aria-label="Contact">
       <div className="container-site">
@@ -21,29 +22,27 @@ export function Contact() {
             <div className="grid-backdrop" aria-hidden />
 
             <div className="relative mx-auto max-w-2xl text-center">
-              <p className="section-kicker">Get In Touch</p>
+              <p className="section-kicker">{t.kicker}</p>
               <h2 className="section-title mt-4">
-                Connect With Me
+                {t.title}
                 <span className="status-dot mt-1 inline-block h-2 w-2 rounded-full bg-accent align-middle" aria-hidden />
               </h2>
-              <p className="prose-lede mt-5 mx-auto">
-                Feel free to reach out for collaborations or just a friendly hello!
-              </p>
+              <p className="prose-lede mt-5 mx-auto">{t.lede}</p>
             </div>
 
             <div className="relative mx-auto mt-10 max-w-2xl text-center">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
-                <span className="font-mono text-[0.7rem] text-fg-subtle">Available for freelance projects</span>
+                <span className="font-mono text-[0.7rem] text-fg-subtle">{t.available}</span>
               </div>
-              <ContactForm />
+              <ContactForm t={t.form} />
             </div>
 
             <div className="relative mx-auto mt-12 max-w-2xl">
               <div className="flex items-center gap-4">
                 <span className="h-px flex-1 bg-border" aria-hidden />
                 <span className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-fg-faint">
-                  or find me elsewhere
+                  {t.orElsewhere}
                 </span>
                 <span className="h-px flex-1 bg-border" aria-hidden />
               </div>

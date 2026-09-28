@@ -5,6 +5,8 @@ export const profile = {
   role: "Full-Stack Web Developer",
   roles: ["Software Engineering Student", "Full-Stack Web Developer", "SaaS Developer"],
   tagline: "I design and build full-stack software products — from POS systems to multi-tenant SaaS platforms.",
+  oneLiner:
+    "Software engineering student and full-stack developer. I design and build full-stack products — from POS systems to multi-tenant SaaS platforms.",
   location: "Malaysia",
   university: "Universiti Teknologi Malaysia",
   studyLine: "Software Engineering",
@@ -26,6 +28,9 @@ export const company = {
   stack: ["Electron", "Node.js", "SQLite", "JavaScript"],
   description: "A business management and point-of-sale system that runs as a desktop app and a SaaS platform — handling sales, inventory, purchasing, branches, and user roles across the full business workflow.",
   features: ["POS terminal", "Inventory & stock control", "Sales & purchasing", "Multi-branch operations", "Users, roles & permissions", "Desktop + SaaS"],
+  category: "BusinessApplication",
+  operatingSystem: "Windows, Web",
+  pricing: { currency: "USD", low: 29, high: 199, count: 3 },
 };
 
 export const zelvoa = {
@@ -36,6 +41,9 @@ export const zelvoa = {
   stack: ["Next.js", "React", "TypeScript", "PostgreSQL", "Prisma"],
   description: "A multi-tenant SaaS platform for social media management — scheduling content, running campaigns, and tracking analytics with role-based access for teams and organizations.",
   features: ["Content scheduling", "Campaign management", "Analytics dashboard", "Unified inbox", "Organizations & workspaces", "Roles & permissions"],
+  category: "SocialMediaApplication",
+  operatingSystem: "Web",
+  pricing: { currency: "MYR", low: 0, high: 199, count: 4 },
 };
 
 export const nav = [
@@ -164,3 +172,30 @@ export const process = [
     description: "A production-ready product, deployed and documented for the long term.",
   },
 ];
+
+export const llms = {
+  site: {
+    name: profile.name,
+    url: "https://249abodii.vercel.app/",
+    oneLiner: profile.oneLiner,
+    languages: ["en", "ar"],
+  },
+  products: [
+    {
+      name: company.name,
+      url: company.href,
+      description: company.description,
+    },
+    {
+      name: zelvoa.name,
+      url: zelvoa.href,
+      description: zelvoa.description,
+    },
+    {
+      name: "portfolio-v2 — this site",
+      url: "https://249abodii.vercel.app/",
+      description:
+        "A dark-first, minimal developer portfolio built with Next.js, React, TypeScript, and Tailwind CSS — static export with zero runtime dependencies and full English & Arabic support.",
+    },
+  ],
+};

@@ -39,9 +39,13 @@ export function Reveal({
   }, []);
 
   return (
+    // @ts-expect-error -- React 19 dynamic element type inference
     <Tag
+      // @ts-expect-error -- React 19 dynamic element type inference
       ref={ref}
+      // @ts-expect-error -- React 19 dynamic element type inference
       className={`${variant === "lg" ? "reveal-lg" : "reveal"} ${visible ? "is-visible" : ""} ${className}`}
+      // @ts-expect-error -- React 19 dynamic element type inference
       style={{ "--reveal-delay": `${delay}ms` } as React.CSSProperties}
     >
       {children}

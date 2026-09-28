@@ -217,3 +217,33 @@ export function Terminal({ size, ...props }: IconProps) {
     </svg>
   );
 }
+
+/* --- Assistant --- */
+
+export function Send({ size, ...props }: IconProps) {
+  return (
+    <svg {...base({ size, ...props })}>
+      <path d="M4.5 12h15" />
+      <path d="m13 5.5 6.5 6.5-6.5 6.5" />
+    </svg>
+  );
+}
+
+export function Sparkles({ size, ...props }: IconProps) {
+  return (
+    <svg {...base({ size, ...props })}>
+      <path d="M12 4l1.4 3.9L17.5 9l-4.1 1.1L12 14l-1.4-3.9L6.5 9l4.1-1.1Z" />
+      <path d="M18 15l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7Z" />
+    </svg>
+  );
+}
+
+export function Trash({ size, ...props }: IconProps) {
+  return (
+    <svg {...base({ size, ...props })}>
+      <path d="M4 7h16" />
+      <path d="M9 7V5h6v2" />
+      <path d="M6 7l1 13h10l1-13" />
+    </svg>
+  );
+}
